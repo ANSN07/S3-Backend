@@ -1,0 +1,23 @@
+{
+  "name": "s3-upload-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.315.0",
+    "aws-sdk": "^2.820.0",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.0.3",
+    "express": "^4.17.1",
+    "file-encryptor": "^0.1.1",
+    "nodemon": "^2.0.22",
+    "uuid": "^8.3.2"
+  }
+}
