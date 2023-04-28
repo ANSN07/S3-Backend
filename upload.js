@@ -28,24 +28,33 @@ const uploadFile = async (req, res, next) => {
   const outputFile = paths[file_id];
   const bucketName = "webapp1buckett";
   let startTime = performance.now();
-  fs.readFile(outputFile, function (err, data) {
-    if (err) {
-      throw err;
+
+  const uploadOp = async () => {
+    const stream = fs.createReadStream(outputFile);
+
+    const paramsObj = {
+      Bucket: bucketName,
+      Key: outputFile,
+      Body: stream,
+      ACL: "public-read",
+    };
+
+    const options = {
+      partSize: 10 * 1024 * 1024,
+      queueSize: 1,
+    };
+
+    try {
+      await s3.upload(paramsObj, options).promise();
+      console.log("upload OK");
+      const endTime = performance.now();
+      const elapsedTime = ((endTime - startTime) / 1000).toFixed(2);
+      console.log("Successfully uploaded data to webapp1buckett");
+      res.send({ Elapsed_time: elapsedTime });
+    } catch (error) {
+      console.log("upload ERROR", error);
     }
-
-    const params = { Bucket: bucketName, Key: outputFile, Body: data };
-
-    s3.putObject(params, function (err, data) {
-      if (err) {
-        console.log(err);
-        throw err;
-      } else {
-        const endTime = performance.now();
-        const elapsedTime = ((endTime - startTime) / 1000).toFixed(2);
-        console.log("Successfully uploaded data to webapp1buckett");
-        res.send({ Elapsed_time: elapsedTime });
-      }
-    });
-  });
+  };
+  uploadOp();
 };
 module.exports = { uploadFile };
