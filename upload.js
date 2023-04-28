@@ -2,11 +2,14 @@ const AWS = require("aws-sdk");
 const fs = require("fs");
 require("dotenv").config();
 
-AWS.config.update({
-  accessKeyId: process.env.aws_access_key_id,
-  secretAccessKey: process.env.aws_secret_access_key,
-  sessionToken: process.env.aws_session_token,
-});
+AWS.config.update(
+  {
+    accessKeyId: process.env.aws_access_key_id,
+    secretAccessKey: process.env.aws_secret_access_key,
+    sessionToken: process.env.aws_session_token,
+  },
+  { httpOptions: { timeout: 360000 } }
+);
 
 const s3 = new AWS.S3({
   region: "us-east-1", //
